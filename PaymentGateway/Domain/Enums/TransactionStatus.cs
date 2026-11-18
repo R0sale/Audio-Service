@@ -4,11 +4,10 @@ using System.Text;
 
 namespace Domain.Enums
 {
-    public enum PaymentStatus
+    public enum TransactionStatus
     {
+        Success,
         Pending,
-        Authorized,
-        Captured,
-        Failed,
+        Failed
     }
 }
