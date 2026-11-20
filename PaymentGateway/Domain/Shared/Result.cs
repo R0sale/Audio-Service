@@ -4,10 +4,11 @@ using System.Text;
 
 namespace Domain.Shared
 {
-    public class Result
+    public class Result<T>
     {
         public bool IsSuccessful { get; }
         public string Error { get; }
+        public T Value { get; set; }
 
         public Result(bool isSuccessful, string error)
         {
@@ -15,7 +16,7 @@ namespace Domain.Shared
             Error = error;
         }
 
-        public static Result Success() => new Result(true, string.Empty);
-        public static Result Failure(string error) => new Result(false, error);
+        public static Result<T> Success(T value) => new Result<T>(true, string.Empty) { Value = value };
+        public static Result<T> Failure(string error) => new Result<T>(false, error);
     }
 }

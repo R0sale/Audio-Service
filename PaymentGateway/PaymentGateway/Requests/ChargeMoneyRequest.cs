@@ -7,5 +7,6 @@ namespace PaymentGateway.Requests
         public Currency Currency { get; set; }
         public decimal Amount { get; set; }
         public Guid UserId { get; set; }
+        public string PaymentMethodId { get; set; }
     }
 }

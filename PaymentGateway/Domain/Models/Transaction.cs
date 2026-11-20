@@ -9,9 +9,11 @@ namespace Domain.Models
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
+        public string IdempotencyKey { get; set; }
         public decimal Amount { get; set; }
         public Currency Currency {  get; set; }
         public TransactionStatus Status { get; set; }
+        public string? PaymentIntentId { get; set; }
         public string? ErrorMessage { get; set; }
     }
 }
