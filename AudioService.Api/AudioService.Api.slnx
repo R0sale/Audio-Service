@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Application/Application.csproj" />
+  <Project Path="AudioService.Api/AudioService.Api.csproj" />
+  <Project Path="Domain/Domain.csproj" />
+  <Project Path="Infrastucture/Infrastucture.csproj" />
+</Solution>
