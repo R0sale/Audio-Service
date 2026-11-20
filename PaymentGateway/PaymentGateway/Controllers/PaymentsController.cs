@@ -17,13 +17,13 @@ namespace PaymentGateway.Controllers
         }
 
         [HttpPost("charge")]
-        public async Task<IActionResult> ChargeMoney([FromBody] ChargeMoneyRequest request)
+        public async Task<IActionResult> ChargeMoney([FromBody] ChargeMoneyRequest request, [FromHeader(Name = "Idempotency-Key")] string IdempotencyKey)
         {
-            var command = new ChargeCommand(request.UserId, request.Amount, request.Currency, Guid.NewGuid().ToString());
+            var command = new ChargeCommand(request.UserId, request.Amount, request.Currency, request.PaymentMethodId, IdempotencyKey);
             var result = await _mediator.Send(command);
 
             if (result.IsSuccessful)
-                return Ok();
+                return Ok(result.Value);
             else
                 return BadRequest(result.Error);
         }

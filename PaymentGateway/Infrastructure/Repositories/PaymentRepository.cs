@@ -19,6 +19,13 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
+        public async Task<Transaction?> GetTransactionByIdempotencyKeyAsync(string idempotencyKey)
+        {
+            var record = await _context.Transactions.FirstOrDefaultAsync(x => x.IdempotencyKey == idempotencyKey);
+
+            return record;
+        }
+
         public async Task CreateTransactionAsync(Transaction transaction)
         {
             _context.Transactions.Add(transaction);

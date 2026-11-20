@@ -19,6 +19,14 @@ namespace Infrastructure.Persistence
             builder.Entity<Transaction>()
                 .Property(e => e.Currency)
                 .HasConversion<string>();
+
+            builder.Entity<Transaction>()
+                .Property(e => e.Status)
+                .HasConversion<string>();
+
+            builder.Entity<Transaction>()
+                .HasIndex(x => x.IdempotencyKey)
+                .IsUnique();
         }
     }
 }

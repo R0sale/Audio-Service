@@ -9,6 +9,7 @@ namespace Application.Contracts
 {
     public interface IPaymentRepository
     {
+        Task<Transaction?> GetTransactionByIdempotencyKeyAsync(string idempotencyKey);
         Task CreateTransactionAsync(Transaction transaction);
         Task SaveChangesAsync();
     }
