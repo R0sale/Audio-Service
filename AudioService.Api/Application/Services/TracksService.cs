@@ -24,7 +24,27 @@ namespace Application.Services
             if (track == null)
                 return Result<TrackDto>.Failure($"Couldn't find track with trackId {trackId}");
 
-            var result = new TrackDto
+            var result = MapToTrackDto(track);
+
+            return Result<TrackDto>.Success(result);
+        }
+
+        public async Task<IEnumerable<TrackDto>> GetPopularTracksAsync(int numberofTracks, CancellationToken ct)
+        {
+            var tracks = await _repository.GetPopularTracksAsync(numberofTracks, ct);
+
+            var result = new List<TrackDto>();
+            foreach (var track in tracks)
+            {
+                result.Add(MapToTrackDto(track));
+            }
+
+            return result;
+        }
+
+        private TrackDto MapToTrackDto(Track track)
+        {
+            return new TrackDto
             {
                 Id = track.Id,
                 Album = track.Album,
@@ -34,8 +54,6 @@ namespace Application.Services
                 DurationInSeconds = track.DurationInSeconds,
                 Title = track.Title
             };
-
-            return Result<TrackDto>.Success(result);
         }
     }
 }

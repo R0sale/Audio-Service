@@ -23,5 +23,12 @@ namespace Infrastructure.Repositories
 
             return track;
         }
+
+        public async Task<IEnumerable<Track>> GetPopularTracksAsync(int numberofTracks, CancellationToken ct)
+        {
+            var tracks = await _context.Tracks.AsNoTracking().Take(numberofTracks).ToListAsync(ct);
+
+            return tracks;
+        }
     }
 }
