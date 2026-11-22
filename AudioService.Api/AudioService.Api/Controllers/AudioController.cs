@@ -23,7 +23,7 @@ namespace AudioService.Api.Controllers
             var result = await _service.GetTrackByIdAsync(id, HttpContext.RequestAborted);
 
             if (!result.IsSuccessful)
-                return BadRequest(result.ErrorMessage);
+                return NotFound(result.ErrorMessage);
             
             return Ok(result.Value);
         }
@@ -33,10 +33,7 @@ namespace AudioService.Api.Controllers
         {
             var result = await _service.GetPlaylistsAsync(ct);
 
-            if (!result.IsSuccessful)
-                return BadRequest(result.ErrorMessage);
-
-            return Ok(result.Value);
+            return Ok(result);
         }
 
         [HttpGet("playlists/{id:guid}")]
@@ -45,7 +42,7 @@ namespace AudioService.Api.Controllers
             var result = await _service.GetPlaylistByIdAsync(id, ct);
 
             if (!result.IsSuccessful)
-                return BadRequest(result.ErrorMessage);
+                return NotFound(result.ErrorMessage);
 
             return Ok(result.Value);
         }

@@ -14,10 +14,12 @@ namespace AudioService.Api.Middlewares
             {
                 var error = ex switch
                 {
-                    OperationCanceledException => (StatusCodes.Status404NotFound, "A timeout has been triggered"),
+                    OperationCanceledException => (StatusCodes.Status499ClientClosedRequest, "A timeout has been triggered"),
                     _ => (StatusCodes.Status500InternalServerError, "A server error occured while processing a request")
                 };
 
+                context.Response.StatusCode = error.Item1;
+                context.Response.ContentType = "application/json";
                 await context.Response.WriteAsync(JsonSerializer.Serialize(new
                 {
                     message = error.Item2,

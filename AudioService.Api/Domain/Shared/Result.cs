@@ -2,11 +2,11 @@
 {
     public sealed class Result<T>
     {
-        public bool IsSuccessful { get; set; }
-        public string? ErrorMessage { get; set; }
-        public T? Value { get; set; }
+        public bool IsSuccessful { get; }
+        public string? ErrorMessage { get; }
+        public T? Value { get; }
 
-        public Result(bool isSuccessful, T? value, string? errorMessage)
+        private Result(bool isSuccessful, T? value, string? errorMessage)
         {
             IsSuccessful = isSuccessful;
             Value = value;

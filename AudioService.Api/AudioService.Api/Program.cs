@@ -1,16 +1,16 @@
 using AudioService.Api.Middlewares;
 using AudioService.Api.Extensions;
-using Microsoft.AspNetCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigureServices(builder.Configuration);
+builder.Services.AddScoped<ExceptionHandlingMiddleware>();
 
 builder.Services.AddControllers();
 
 var app = builder.Build();
 
-app.UseMiddleware<ExceptionHandlerMiddleware>();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseAuthorization();
 

@@ -19,33 +19,27 @@ namespace Infrastucture.Repositories
             _context = context;
         }
 
-        public async Task<Result<Track>> GetTrackByIdAsync(Guid trackId, CancellationToken ct)
+        public async Task<Track?> GetTrackByIdAsync(Guid trackId, CancellationToken ct)
         {
             var track = await _context.Tracks.AsNoTracking().SingleOrDefaultAsync(x => x.Id == trackId, ct);
 
-            if (track == null)
-                return Result<Track>.Failure($"Couldn't find the track with track id: {trackId}");
-
-            return Result<Track>.Success(track);
+            return track;
         }
 
-        public async Task<Result<IEnumerable<Playlist>>> GetPlaylistsAsync(CancellationToken ct)
+        public async Task<IEnumerable<Playlist>> GetPlaylistsAsync(CancellationToken ct)
         {
             var playlists = await _context.Playlists.AsNoTracking().ToListAsync(ct);
 
-            return Result<IEnumerable<Playlist>>.Success(playlists);
+            return playlists;
         }
 
-        public async Task<Result<Playlist>> GetPlaylistByIdAsync(Guid playlistId, CancellationToken ct)
+        public async Task<Playlist?> GetPlaylistByIdAsync(Guid playlistId, CancellationToken ct)
         {
             var playlist = await _context.Playlists.AsNoTracking()
             .Include(x => x.Tracks)
             .SingleOrDefaultAsync(x => x.Id == playlistId, ct);
 
-            if (playlist == null)
-                return Result<Playlist>.Failure($"Couldn't find the playlist with playlist id: {playlistId}");
-
-            return Result<Playlist>.Success(playlist);
+            return playlist;
         }
     }
 }

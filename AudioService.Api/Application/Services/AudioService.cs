@@ -20,10 +20,13 @@ namespace Application.Services
         {
             var result = await _repository.GetTrackByIdAsync(trackId, ct);
 
-            return result;
+            if (result == null)
+                return Result<Track>.Failure($"Couldn't find track with trackId {trackId}");
+
+            return Result<Track>.Success(result);
         }
 
-        public async Task<Result<IEnumerable<Playlist>>> GetPlaylistsAsync(CancellationToken ct)
+        public async Task<IEnumerable<Playlist>> GetPlaylistsAsync(CancellationToken ct)
         {
             var result = await _repository.GetPlaylistsAsync(ct);
 
@@ -34,7 +37,10 @@ namespace Application.Services
         {
             var result = await _repository.GetPlaylistByIdAsync(playlistId, ct);
 
-            return result;
+            if (result == null)
+                return Result<Playlist>.Failure($"Couldn't find playlist with playlistId {playlistId}");
+
+            return Result<Playlist>.Success(result);
         }
     }
 }
