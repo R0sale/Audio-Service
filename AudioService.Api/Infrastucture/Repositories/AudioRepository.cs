@@ -17,7 +17,7 @@ namespace Infrastucture.Repositories
             _context = context;
         }
 
-        public async Task<Track> GetTrackByIdAsync(string trackId, CancellationToken ct)
+        public async Task<Track> GetTrackByIdAsync(Guid trackId, CancellationToken ct)
         {
             var track = await _context.Tracks.AsNoTracking().SingleAsync(x => x.Id == trackId, ct);
 
