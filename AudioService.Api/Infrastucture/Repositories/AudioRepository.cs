@@ -23,5 +23,21 @@ namespace Infrastucture.Repositories
 
             return track;
         }
+
+        public async Task<IEnumerable<Playlist>> GetPlaylistsAsync(CancellationToken ct)
+        {
+            var playlists = await _context.Playlists.AsNoTracking().ToListAsync(ct);
+
+            return playlists;
+        }
+
+        public async Task<Playlist> GetPlaylistByIdAsync(Guid playlistId, CancellationToken ct)
+        {
+            var playlist = await _context.Playlists.AsNoTracking()
+                .Include(x => x.Tracks)
+                .SingleAsync(x => x.Id == playlistId, ct);
+
+            return playlist;
+        }
     }
 }

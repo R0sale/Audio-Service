@@ -12,7 +12,7 @@ namespace AudioService.Api.Extensions
             services.AddScoped<IAudioRepository, AudioRepository>();
             services.AddScoped<IAudioService, Application.Services.AudioService>();
 
-            services.AddDbContext<AudioDbContext>(options => options.UseNpgsql(config.GetConnectionString("PostgresConnectionString")));
+            services.AddDbContext<AudioDbContext>(options => options.UseNpgsql(config.GetConnectionString("PostgresConnectionString")).UseSnakeCaseNamingConvention());
 
             return services;
         }

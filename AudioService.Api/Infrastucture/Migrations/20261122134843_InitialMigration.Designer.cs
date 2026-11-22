@@ -9,11 +9,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Infrastucture.Migrations
+namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AudioDbContext))]
-    [Migration("20261122132453_PlaylistTracks")]
-    partial class PlaylistTracks
+    [Migration("20261122134843_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,77 +29,96 @@ namespace Infrastucture.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("CoverBlobName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("cover_blob_name");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("description");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("title");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_playlists");
 
-                    b.ToTable("Playlists");
+                    b.ToTable("playlists", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.PlaylistTrack", b =>
                 {
                     b.Property<Guid>("PlaylistId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("playlist_id");
 
                     b.Property<Guid>("TrackId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("track_id");
 
                     b.Property<int>("Order")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("order");
 
-                    b.HasKey("PlaylistId", "TrackId");
+                    b.HasKey("PlaylistId", "TrackId")
+                        .HasName("pk_playlist_track");
 
-                    b.HasIndex("TrackId");
+                    b.HasIndex("TrackId")
+                        .HasDatabaseName("ix_playlist_track_track_id");
 
                     b.HasIndex("PlaylistId", "Order")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_playlist_track_playlist_id_order");
 
-                    b.ToTable("PlaylistTrack");
+                    b.ToTable("playlist_track", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.Track", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("Album")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("album");
 
                     b.Property<string>("Artist")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("artist");
 
                     b.Property<string>("AudioBlobName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("audio_blob_name");
 
                     b.Property<string>("CoverBlobName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("cover_blob_name");
 
                     b.Property<int>("DurationInSeconds")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("duration_in_seconds");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("title");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_tracks");
 
-                    b.ToTable("Tracks");
+                    b.ToTable("tracks", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.PlaylistTrack", b =>
@@ -108,13 +127,15 @@ namespace Infrastucture.Migrations
                         .WithMany("Tracks")
                         .HasForeignKey("PlaylistId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_playlist_track_playlists_playlist_id");
 
                     b.HasOne("Domain.Models.Track", "Track")
                         .WithMany()
                         .HasForeignKey("TrackId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_playlist_track_tracks_track_id");
 
                     b.Navigation("Playlist");
 

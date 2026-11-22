@@ -22,5 +22,17 @@ namespace AudioService.Api.Controllers
 
             return Ok(track);
         }
+
+        [HttpGet("playlists")]
+        public async Task<IActionResult> GetPlaylists(CancellationToken ct)
+        {
+            return Ok(await _service.GetPlaylistsAsync(ct));
+        }
+
+        [HttpGet("playlists/{id:guid}")]
+        public async Task<IActionResult> GetPlaylistById(CancellationToken ct, Guid id)
+        {
+            return Ok(await _service.GetPlaylistByIdAsync(id, ct));
+        }
     }
 }
