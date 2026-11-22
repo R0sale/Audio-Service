@@ -21,5 +21,19 @@ namespace Application.Services
 
             return track;
         }
+
+        public async Task<IEnumerable<Playlist>> GetPlaylistsAsync(CancellationToken ct)
+        {
+            var playlists = await _repository.GetPlaylistsAsync(ct);
+
+            return playlists;
+        }
+
+        public async Task<Playlist> GetPlaylistByIdAsync(Guid playlistId, CancellationToken ct)
+        {
+            var playlist = await _repository.GetPlaylistByIdAsync(playlistId, ct);
+
+            return playlist;
+        }
     }
 }

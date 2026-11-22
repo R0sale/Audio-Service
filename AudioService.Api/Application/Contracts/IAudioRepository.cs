@@ -8,5 +8,7 @@ namespace Application.Contracts
     public interface IAudioRepository
     {
         Task<Track> GetTrackByIdAsync(Guid trackId, CancellationToken ct);
+        Task<IEnumerable<Playlist>> GetPlaylistsAsync(CancellationToken ct);
+        Task<Playlist> GetPlaylistByIdAsync(Guid playlistId, CancellationToken ct);
     }
 }
