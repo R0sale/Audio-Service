@@ -1,36 +1,20 @@
 ﻿using Application.Contracts;
-using Domain.Shared;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AudioService.Api.Controllers
 {
     [ApiController]
-    [Route("api/audio")]
-    public class AudioController : ControllerBase
+    [Route("api/playlists")]
+    public class PlaylistsController : ControllerBase
     {
         private readonly IPlaylistsService _playlistsService;
-        private readonly ITracksService _tracksService;
 
-        public AudioController(IPlaylistsService playlistsService, ITracksService tracksService)
+        public PlaylistsController(IPlaylistsService playlistsService)
         {
             _playlistsService = playlistsService;
-            _tracksService = tracksService;
         }
 
-        [HttpGet("{id:guid}")]
-        public async Task<IActionResult> GetTrackById(Guid id)
-        {
-            var result = await _tracksService.GetTrackByIdAsync(id, HttpContext.RequestAborted);
-
-            if (!result.IsSuccessful)
-                return NotFound(result.ErrorMessage);
-            
-            return Ok(result.Value);
-        }
-
-        [HttpGet("playlists")]
+        [HttpGet]
         public async Task<IActionResult> GetPlaylists(CancellationToken ct)
         {
             var result = await _playlistsService.GetPlaylistsAsync(ct);
@@ -38,7 +22,7 @@ namespace AudioService.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("playlists/{id:guid}")]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetPlaylistById(CancellationToken ct, Guid id)
         {
             var result = await _playlistsService.GetPlaylistByIdAsync(id, ct);
