@@ -1,4 +1,5 @@
 ﻿using Application.Contracts;
+using Application.DTOs;
 using Domain.Models;
 using Domain.Shared;
 using System;
@@ -16,14 +17,25 @@ namespace Application.Services
             _repository = repository;
         }
 
-        public async Task<Result<Track>> GetTrackByIdAsync(Guid trackId, CancellationToken ct)
+        public async Task<Result<TrackDto>> GetTrackByIdAsync(Guid trackId, CancellationToken ct)
         {
-            var result = await _repository.GetTrackByIdAsync(trackId, ct);
+            var track = await _repository.GetTrackByIdAsync(trackId, ct);
 
-            if (result == null)
-                return Result<Track>.Failure($"Couldn't find track with trackId {trackId}");
+            if (track == null)
+                return Result<TrackDto>.Failure($"Couldn't find track with trackId {trackId}");
 
-            return Result<Track>.Success(result);
+            var result = new TrackDto
+            {
+                Id = track.Id,
+                Album = track.Album,
+                Artist = track.Artist,
+                AudioBlobName = track.AudioBlobName,
+                CoverBlobName = track.CoverBlobName,
+                DurationInSeconds = track.DurationInSeconds,
+                Title = track.Title
+            };
+
+            return Result<TrackDto>.Success(result);
         }
     }
 }
