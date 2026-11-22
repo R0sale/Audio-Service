@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Application.DTOs;
+using Domain.Models;
 using Domain.Shared;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ namespace Application.Contracts
 {
     public interface IPlaylistsService
     {
-        Task<IEnumerable<Playlist>> GetPlaylistsAsync(CancellationToken ct);
-        Task<Result<Playlist>> GetPlaylistByIdAsync(Guid playlistId, CancellationToken ct);
+        Task<IEnumerable<PlaylistDto>> GetPlaylistsAsync(CancellationToken ct);
+        Task<Result<PlaylistDto>> GetPlaylistByIdAsync(Guid playlistId, CancellationToken ct);
     }
 }
