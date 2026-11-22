@@ -15,7 +15,7 @@ namespace Application.Services
             _repository = repository;
         }
 
-        public async Task<Track> GetTrackByIdAsync(string trackId, CancellationToken ct)
+        public async Task<Track> GetTrackByIdAsync(Guid trackId, CancellationToken ct)
         {
             var track = await _repository.GetTrackByIdAsync(trackId, ct);
 

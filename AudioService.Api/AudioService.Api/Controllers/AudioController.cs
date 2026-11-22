@@ -15,8 +15,8 @@ namespace AudioService.Api.Controllers
             _service = service;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetTrackById(string id)
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetTrackById(Guid id)
         {
             var track = await _service.GetTrackByIdAsync(id, HttpContext.RequestAborted);
 

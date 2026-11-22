@@ -6,10 +6,11 @@ namespace Domain.Models
 {
     public sealed class Playlist
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string CoverBlobName { get; set; }
-        public string[] TrackIds { get; set; }
+        
+        public List<PlaylistTrack> Tracks { get; set; }
     }
 }
