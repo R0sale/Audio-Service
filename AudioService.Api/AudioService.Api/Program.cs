@@ -1,18 +1,16 @@
+using AudioService.Api.Middlewares;
 using AudioService.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigureServices(builder.Configuration);
+builder.Services.AddScoped<ExceptionHandlingMiddleware>();
 
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseAuthorization();
 

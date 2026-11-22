@@ -1,9 +1,11 @@
 ﻿using Application.Contracts;
 using Domain.Models;
+using Domain.Shared;
 using Infrastucture.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Infrastucture.Repositories
@@ -17,9 +19,9 @@ namespace Infrastucture.Repositories
             _context = context;
         }
 
-        public async Task<Track> GetTrackByIdAsync(Guid trackId, CancellationToken ct)
+        public async Task<Track?> GetTrackByIdAsync(Guid trackId, CancellationToken ct)
         {
-            var track = await _context.Tracks.AsNoTracking().SingleAsync(x => x.Id == trackId, ct);
+            var track = await _context.Tracks.AsNoTracking().SingleOrDefaultAsync(x => x.Id == trackId, ct);
 
             return track;
         }
@@ -31,11 +33,11 @@ namespace Infrastucture.Repositories
             return playlists;
         }
 
-        public async Task<Playlist> GetPlaylistByIdAsync(Guid playlistId, CancellationToken ct)
+        public async Task<Playlist?> GetPlaylistByIdAsync(Guid playlistId, CancellationToken ct)
         {
             var playlist = await _context.Playlists.AsNoTracking()
-                .Include(x => x.Tracks)
-                .SingleAsync(x => x.Id == playlistId, ct);
+            .Include(x => x.Tracks)
+            .SingleOrDefaultAsync(x => x.Id == playlistId, ct);
 
             return playlist;
         }
