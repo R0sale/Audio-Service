@@ -10,17 +10,19 @@ namespace AudioService.Api.Controllers
     [Route("api/audio")]
     public class AudioController : ControllerBase
     {
-        private readonly IAudioService _service;
+        private readonly IPlaylistsService _playlistsService;
+        private readonly ITracksService _tracksService;
 
-        public AudioController(IAudioService service)
+        public AudioController(IPlaylistsService playlistsService, ITracksService tracksService)
         {
-            _service = service;
+            _playlistsService = playlistsService;
+            _tracksService = tracksService;
         }
 
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetTrackById(Guid id)
         {
-            var result = await _service.GetTrackByIdAsync(id, HttpContext.RequestAborted);
+            var result = await _tracksService.GetTrackByIdAsync(id, HttpContext.RequestAborted);
 
             if (!result.IsSuccessful)
                 return NotFound(result.ErrorMessage);
@@ -31,7 +33,7 @@ namespace AudioService.Api.Controllers
         [HttpGet("playlists")]
         public async Task<IActionResult> GetPlaylists(CancellationToken ct)
         {
-            var result = await _service.GetPlaylistsAsync(ct);
+            var result = await _playlistsService.GetPlaylistsAsync(ct);
 
             return Ok(result);
         }
@@ -39,7 +41,7 @@ namespace AudioService.Api.Controllers
         [HttpGet("playlists/{id:guid}")]
         public async Task<IActionResult> GetPlaylistById(CancellationToken ct, Guid id)
         {
-            var result = await _service.GetPlaylistByIdAsync(id, ct);
+            var result = await _playlistsService.GetPlaylistByIdAsync(id, ct);
 
             if (!result.IsSuccessful)
                 return NotFound(result.ErrorMessage);

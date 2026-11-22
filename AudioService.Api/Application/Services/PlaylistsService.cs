@@ -7,23 +7,13 @@ using System.Text;
 
 namespace Application.Services
 {
-    public class AudioService : IAudioService
+    public class PlaylistsService : IPlaylistsService
     {
-        private readonly IAudioRepository _repository;
+        private readonly IPlaylistsRepository _repository;
 
-        public AudioService(IAudioRepository repository)
+        public PlaylistsService(IPlaylistsRepository repository)
         {
             _repository = repository;
-        }
-
-        public async Task<Result<Track>> GetTrackByIdAsync(Guid trackId, CancellationToken ct)
-        {
-            var result = await _repository.GetTrackByIdAsync(trackId, ct);
-
-            if (result == null)
-                return Result<Track>.Failure($"Couldn't find track with trackId {trackId}");
-
-            return Result<Track>.Success(result);
         }
 
         public async Task<IEnumerable<Playlist>> GetPlaylistsAsync(CancellationToken ct)

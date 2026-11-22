@@ -1,29 +1,20 @@
 ﻿using Application.Contracts;
 using Domain.Models;
-using Domain.Shared;
 using Infrastucture.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text;
 
-namespace Infrastucture.Repositories
+namespace Infrastructure.Repositories
 {
-    public class AudioRepository : IAudioRepository
+    public class PlaylistsRepository : IPlaylistsRepository
     {
         private readonly AudioDbContext _context;
 
-        public AudioRepository(AudioDbContext context)
+        public PlaylistsRepository(AudioDbContext context)
         {
             _context = context;
-        }
-
-        public async Task<Track?> GetTrackByIdAsync(Guid trackId, CancellationToken ct)
-        {
-            var track = await _context.Tracks.AsNoTracking().SingleOrDefaultAsync(x => x.Id == trackId, ct);
-
-            return track;
         }
 
         public async Task<IEnumerable<Playlist>> GetPlaylistsAsync(CancellationToken ct)
