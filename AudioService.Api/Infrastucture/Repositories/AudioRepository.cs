@@ -1,9 +1,11 @@
 ﻿using Application.Contracts;
 using Domain.Models;
+using Domain.Shared;
 using Infrastucture.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Infrastucture.Repositories
@@ -17,27 +19,33 @@ namespace Infrastucture.Repositories
             _context = context;
         }
 
-        public async Task<Track> GetTrackByIdAsync(Guid trackId, CancellationToken ct)
+        public async Task<Result<Track>> GetTrackByIdAsync(Guid trackId, CancellationToken ct)
         {
-            var track = await _context.Tracks.AsNoTracking().SingleAsync(x => x.Id == trackId, ct);
+            var track = await _context.Tracks.AsNoTracking().SingleOrDefaultAsync(x => x.Id == trackId, ct);
 
-            return track;
+            if (track == null)
+                return Result<Track>.Failure($"Couldn't find the track with track id: {trackId}");
+
+            return Result<Track>.Success(track);
         }
 
-        public async Task<IEnumerable<Playlist>> GetPlaylistsAsync(CancellationToken ct)
+        public async Task<Result<IEnumerable<Playlist>>> GetPlaylistsAsync(CancellationToken ct)
         {
             var playlists = await _context.Playlists.AsNoTracking().ToListAsync(ct);
 
-            return playlists;
+            return Result<IEnumerable<Playlist>>.Success(playlists);
         }
 
-        public async Task<Playlist> GetPlaylistByIdAsync(Guid playlistId, CancellationToken ct)
+        public async Task<Result<Playlist>> GetPlaylistByIdAsync(Guid playlistId, CancellationToken ct)
         {
             var playlist = await _context.Playlists.AsNoTracking()
-                .Include(x => x.Tracks)
-                .SingleAsync(x => x.Id == playlistId, ct);
+            .Include(x => x.Tracks)
+            .SingleOrDefaultAsync(x => x.Id == playlistId, ct);
 
-            return playlist;
+            if (playlist == null)
+                return Result<Playlist>.Failure($"Couldn't find the playlist with playlist id: {playlistId}");
+
+            return Result<Playlist>.Success(playlist);
         }
     }
 }

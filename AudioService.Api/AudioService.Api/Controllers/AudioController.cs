@@ -1,5 +1,7 @@
 ﻿using Application.Contracts;
+using Domain.Shared;
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AudioService.Api.Controllers
@@ -18,21 +20,34 @@ namespace AudioService.Api.Controllers
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetTrackById(Guid id)
         {
-            var track = await _service.GetTrackByIdAsync(id, HttpContext.RequestAborted);
+            var result = await _service.GetTrackByIdAsync(id, HttpContext.RequestAborted);
 
-            return Ok(track);
+            if (!result.IsSuccessful)
+                return BadRequest(result.ErrorMessage);
+            
+            return Ok(result.Value);
         }
 
         [HttpGet("playlists")]
         public async Task<IActionResult> GetPlaylists(CancellationToken ct)
         {
-            return Ok(await _service.GetPlaylistsAsync(ct));
+            var result = await _service.GetPlaylistsAsync(ct);
+
+            if (!result.IsSuccessful)
+                return BadRequest(result.ErrorMessage);
+
+            return Ok(result.Value);
         }
 
         [HttpGet("playlists/{id:guid}")]
         public async Task<IActionResult> GetPlaylistById(CancellationToken ct, Guid id)
         {
-            return Ok(await _service.GetPlaylistByIdAsync(id, ct));
+            var result = await _service.GetPlaylistByIdAsync(id, ct);
+
+            if (!result.IsSuccessful)
+                return BadRequest(result.ErrorMessage);
+
+            return Ok(result.Value);
         }
     }
 }
