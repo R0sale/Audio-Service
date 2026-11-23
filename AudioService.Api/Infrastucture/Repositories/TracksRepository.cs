@@ -26,7 +26,7 @@ namespace Infrastructure.Repositories
 
         public async Task<IEnumerable<Track>> GetPopularTracksAsync(int numberofTracks, CancellationToken ct)
         {
-            var tracks = await _context.Tracks.AsNoTracking().Take(numberofTracks).ToListAsync(ct);
+            var tracks = await _context.Tracks.AsNoTracking().OrderBy(x => x.Title).Take(numberofTracks).ToListAsync(ct);
 
             return tracks;
         }

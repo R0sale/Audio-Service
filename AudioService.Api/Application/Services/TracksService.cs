@@ -49,8 +49,8 @@ namespace Application.Services
                 Id = track.Id,
                 Album = track.Album,
                 Artist = track.Artist,
-                AudioBlobName = track.AudioBlobName,
-                CoverBlobName = track.CoverBlobName,
+                AudioUrl = track.AudioBlobName,
+                CoverUrl = track.CoverBlobName,
                 DurationInSeconds = track.DurationInSeconds,
                 Title = track.Title
             };

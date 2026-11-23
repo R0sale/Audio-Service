@@ -26,7 +26,7 @@ namespace AudioService.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPopularTracksAsync([FromQuery] int take, CancellationToken ct)
+        public async Task<IActionResult> GetPopularTracksAsync(CancellationToken ct, [FromQuery] int take = 10)
         {
             var result = await _tracksService.GetPopularTracksAsync(take, ct);
 

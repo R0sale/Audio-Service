@@ -11,7 +11,7 @@ namespace Application.DTOs
         public string Artist { get; set; }
         public string? Album { get; set; }
         public int DurationInSeconds { get; set; }
-        public string AudioBlobName { get; set; }
-        public string CoverBlobName { get; set; }
+        public string AudioUrl { get; set; }
+        public string? CoverUrl { get; set; }
     }
 }

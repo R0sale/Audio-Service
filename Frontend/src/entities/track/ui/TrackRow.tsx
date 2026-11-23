@@ -45,7 +45,7 @@ export function TrackRow({ track, position, isActive, isPlaying, onPlay }: Track
 
         <span className="hidden truncate text-sm text-muted sm:block">{track.album}</span>
 
-        <span className="text-sm text-muted tabular-nums">{formatTime(track.durationSec)}</span>
+        <span className="text-sm text-muted tabular-nums">{formatTime(track.durationInSeconds)}</span>
       </button>
     </li>
   )
