@@ -24,5 +24,13 @@ namespace AudioService.Api.Controllers
 
             return Ok(result.Value);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetPopularTracksAsync(CancellationToken ct, [FromQuery] int take = 10)
+        {
+            var result = await _tracksService.GetPopularTracksAsync(take, ct);
+
+            return Ok(result);
+        }
     }
 }

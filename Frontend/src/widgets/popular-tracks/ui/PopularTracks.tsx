@@ -1,9 +1,13 @@
 import { useCurrentTrackId, usePlayerStore } from '@/entities/player'
-import { mockTracks, TrackRow } from '@/entities/track'
+import { TrackRow, type Track } from '@/entities/track'
 
 const QUEUE_ID = 'popular-tracks'
 
-export function PopularTracks() {
+interface PopularTracksProps {
+  tracks: Track[]
+}
+
+export function PopularTracks({ tracks }: PopularTracksProps) {
   const currentTrackId = useCurrentTrackId()
   const isPlaying = usePlayerStore((state) => state.isPlaying)
   const playQueue = usePlayerStore((state) => state.playQueue)
@@ -15,7 +19,7 @@ export function PopularTracks() {
         Popular tracks
       </h2>
       <ol>
-        {mockTracks.map((track, index) => {
+        {tracks.map((track, index) => {
           const isActive = track.id === currentTrackId
           return (
             <TrackRow
@@ -24,7 +28,7 @@ export function PopularTracks() {
               position={index + 1}
               isActive={isActive}
               isPlaying={isPlaying}
-              onPlay={() => (isActive ? togglePlay() : playQueue(mockTracks, index, QUEUE_ID))}
+              onPlay={() => (isActive ? togglePlay() : playQueue(tracks, index, QUEUE_ID))}
             />
           )
         })}
