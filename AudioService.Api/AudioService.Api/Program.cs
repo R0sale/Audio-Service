@@ -1,9 +1,11 @@
 using AudioService.Api.Middlewares;
 using AudioService.Api.Extensions;
+using Application.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigureServices(builder.Configuration);
+builder.Services.ConfigureStorage(builder.Configuration);
 builder.Services.AddScoped<ExceptionHandlingMiddleware>();
 
 builder.Services.AddCors(options =>
@@ -18,6 +20,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
+await app.Services.GetRequiredService<IMediaStorage>().EnsureContainersAsync();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
