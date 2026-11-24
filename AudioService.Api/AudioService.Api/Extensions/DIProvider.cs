@@ -4,7 +4,8 @@ using Infrastructure.Repositories;
 using Infrastucture.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Azure.Storage.Blobs;
-using Infrastructure.MediaStorage;
+using Infrastructure.Storage;
+using Infrastructure.Seeding;
 
 namespace AudioService.Api.Extensions
 {
@@ -17,6 +18,9 @@ namespace AudioService.Api.Extensions
             services.AddScoped<ITracksRepository, TracksRepository>();
             services.AddScoped<ITracksService, TracksService>();
             services.AddSingleton<IMediaStorage, MediaStorage>();
+
+            services.AddHttpClient();
+            services.AddScoped<DataSeeder>();
 
             services.AddDbContext<AudioDbContext>(options => options.UseNpgsql(config.GetConnectionString("PostgresConnectionString")).UseSnakeCaseNamingConvention());
 

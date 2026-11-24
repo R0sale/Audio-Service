@@ -33,6 +33,7 @@ services:
       - "10002:10002"
     command: >
       azurite --loose
+      --location /data
       --blobHost 0.0.0.0 --blobPort 10000
       --queueHost 0.0.0.0 --queuePort 10001
       --tableHost 0.0.0.0 --tablePort 10002

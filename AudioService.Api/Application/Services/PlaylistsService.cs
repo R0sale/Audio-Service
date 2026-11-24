@@ -1,7 +1,9 @@
 ﻿using Application.Contracts;
 using Application.DTOs;
+using Domain.Errors;
 using Domain.Models;
 using Domain.Shared;
+using System.Net;
 
 namespace Application.Services
 {
@@ -32,7 +34,7 @@ namespace Application.Services
             var playlist = await _repository.GetPlaylistByIdAsync(playlistId, ct);
 
             if (playlist == null)
-                return Result<PlaylistDto>.Failure($"Couldn't find playlist with playlistId {playlistId}");
+                return Result<PlaylistDto>.Failure(new ObjectNotFoundError($"Couldn't find playlist with playlistId {playlistId}", HttpStatusCode.NotFound));
 
             var result = MapToPlaylistDto(playlist);
 

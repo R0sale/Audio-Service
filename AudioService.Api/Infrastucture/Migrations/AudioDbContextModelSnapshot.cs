@@ -30,7 +30,6 @@ namespace Infrastructure.Migrations
                         .HasColumnName("id");
 
                     b.Property<string>("CoverBlobName")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("cover_blob_name");
 
@@ -99,7 +98,6 @@ namespace Infrastructure.Migrations
                         .HasColumnName("audio_blob_name");
 
                     b.Property<string>("CoverBlobName")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("cover_blob_name");
 

@@ -1,6 +1,7 @@
 using AudioService.Api.Middlewares;
 using AudioService.Api.Extensions;
 using Application.Contracts;
+using Infrastructure.Seeding;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +22,14 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-await app.Services.GetRequiredService<IMediaStorage>().EnsureContainersAsync();
+await app.Services.GetRequiredService<IMediaStorage>().EnsureContainersAsync(app.Lifetime.ApplicationStopping);
+
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+    await seeder.SeedAsync(app.Lifetime.ApplicationStopping);
+}
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
