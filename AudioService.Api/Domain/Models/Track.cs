@@ -13,6 +13,6 @@ namespace Domain.Models
         public string? Album { get; set; }
         public int DurationInSeconds { get; set; }
         public string AudioBlobName { get; set; }
-        public string CoverBlobName { get; set; }
+        public string? CoverBlobName { get; set; }
     }
 }

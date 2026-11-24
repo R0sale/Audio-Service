@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Infrastructure.MediaStorage
+namespace Infrastructure.Storage
 {
     public sealed class MediaStorageOptions
     {

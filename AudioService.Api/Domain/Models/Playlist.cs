@@ -9,7 +9,7 @@ namespace Domain.Models
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public string CoverBlobName { get; set; }
+        public string? CoverBlobName { get; set; }
 
         public List<PlaylistTrack> Tracks { get; set; } = [];
     }

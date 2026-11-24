@@ -1,10 +1,9 @@
 ﻿using Application.Contracts;
 using Application.DTOs;
+using Domain.Errors;
 using Domain.Models;
 using Domain.Shared;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Net;
 
 namespace Application.Services
 {
@@ -22,7 +21,7 @@ namespace Application.Services
             var track = await _repository.GetTrackByIdAsync(trackId, ct);
 
             if (track == null)
-                return Result<TrackDto>.Failure($"Couldn't find track with trackId {trackId}");
+                return Result<TrackDto>.Failure(new ObjectNotFoundError($"Couldn't find track with trackId {trackId}", HttpStatusCode.NotFound));
 
             var result = MapToTrackDto(track);
 
