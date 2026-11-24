@@ -3,6 +3,7 @@ using Application.DTOs;
 using Domain.Errors;
 using Domain.Models;
 using Domain.Shared;
+using Domain.Enums;
 using System.Net;
 
 namespace Application.Services
@@ -10,10 +11,12 @@ namespace Application.Services
     public class TracksService : ITracksService
     {
         private readonly ITracksRepository _repository;
+        private readonly IMediaStorage _storage;
 
-        public TracksService(ITracksRepository repository)
+        public TracksService(ITracksRepository repository, IMediaStorage storage)
         {
             _repository = repository;
+            _storage = storage;
         }
 
         public async Task<Result<TrackDto>> GetTrackByIdAsync(Guid trackId, CancellationToken ct)
@@ -23,7 +26,9 @@ namespace Application.Services
             if (track == null)
                 return Result<TrackDto>.Failure(new ObjectNotFoundError($"Couldn't find track with trackId {trackId}", HttpStatusCode.NotFound));
 
-            var result = MapToTrackDto(track);
+            var audioUrl = _storage.GetFullUrl(MediaKind.Audio, track.AudioBlobName);
+
+            var result = MapToTrackDto(track, audioUrl);
 
             return Result<TrackDto>.Success(result);
         }
@@ -35,20 +40,21 @@ namespace Application.Services
             var result = new List<TrackDto>();
             foreach (var track in tracks)
             {
-                result.Add(MapToTrackDto(track));
+                var audioUrl = _storage.GetFullUrl(MediaKind.Audio, track.AudioBlobName);
+                result.Add(MapToTrackDto(track, audioUrl));
             }
 
             return result;
         }
 
-        private TrackDto MapToTrackDto(Track track)
+        private TrackDto MapToTrackDto(Track track, string audioUrl)
         {
             return new TrackDto
             {
                 Id = track.Id,
                 Album = track.Album,
                 Artist = track.Artist,
-                AudioUrl = track.AudioBlobName,
+                AudioUrl = audioUrl,
                 CoverUrl = track.CoverBlobName,
                 DurationInSeconds = track.DurationInSeconds,
                 Title = track.Title
