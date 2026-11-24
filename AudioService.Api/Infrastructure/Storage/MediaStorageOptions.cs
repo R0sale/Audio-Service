@@ -8,5 +8,6 @@ namespace Infrastructure.Storage
     {
         public string AudioContainerName { get; set; }
         public string CoverContainerName { get; set; }
+        public int UrlExpireInMinutes { get; set; }
     }
 }

@@ -16,9 +16,12 @@ namespace Infrastructure.Storage
     {
         private readonly BlobContainerClient _audioContainerClient;
         private readonly BlobContainerClient _coverContainerClient;
+        private readonly IOptions<MediaStorageOptions> _options;
 
         public MediaStorage(IOptions<MediaStorageOptions> options, BlobServiceClient serviceClient)
         {
+            _options = options;
+
             _audioContainerClient = serviceClient.GetBlobContainerClient(options.Value.AudioContainerName);
             _coverContainerClient = serviceClient.GetBlobContainerClient(options.Value.CoverContainerName);
         }
@@ -58,6 +61,19 @@ namespace Infrastructure.Storage
                     return await _audioContainerClient.GetBlobClient(blobName).ExistsAsync(ct);
                 case MediaKind.Cover:
                     return await _coverContainerClient.GetBlobClient(blobName).ExistsAsync(ct);
+                default:
+                    throw new ArgumentOutOfRangeException($"The media king: {kind} is not supported by our application");
+            }
+        }
+
+        public string GetFullUrl(MediaKind kind, string blobName)
+        {
+            switch (kind)
+            {
+                case MediaKind.Audio:
+                    return _audioContainerClient.GetBlobClient(blobName).GenerateSasUri(Azure.Storage.Sas.BlobSasPermissions.Read, DateTimeOffset.UtcNow.AddMinutes(_options.Value.UrlExpireInMinutes)).ToString();
+                case MediaKind.Cover:
+                    return _coverContainerClient.GetBlobClient(blobName).GenerateSasUri(Azure.Storage.Sas.BlobSasPermissions.Read, DateTimeOffset.UtcNow.AddMinutes(_options.Value.UrlExpireInMinutes)).ToString();
                 default:
                     throw new ArgumentOutOfRangeException($"The media king: {kind} is not supported by our application");
             }
