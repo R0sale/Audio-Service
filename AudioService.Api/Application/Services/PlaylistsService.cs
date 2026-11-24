@@ -3,6 +3,7 @@ using Application.DTOs;
 using Domain.Errors;
 using Domain.Models;
 using Domain.Shared;
+using Domain.Enums;
 using System.Net;
 
 namespace Application.Services
@@ -10,10 +11,12 @@ namespace Application.Services
     public class PlaylistsService : IPlaylistsService
     {
         private readonly IPlaylistsRepository _repository;
+        private readonly IMediaStorage _storage;
 
-        public PlaylistsService(IPlaylistsRepository repository)
+        public PlaylistsService(IPlaylistsRepository repository, IMediaStorage storage)
         {
             _repository = repository;
+            _storage = storage;
         }
 
         public async Task<IEnumerable<PlaylistDto>> GetPlaylistsAsync(CancellationToken ct)
@@ -46,6 +49,8 @@ namespace Application.Services
             var tracks = new List<PlaylistTrackDto>();
             foreach (var track in playlist.Tracks)
             {
+                var audioUrl = _storage.GetFullUrl(MediaKind.Audio, track.Track.AudioBlobName);
+
                 tracks.Add(new PlaylistTrackDto
                 {
                     Order = track.Order,
