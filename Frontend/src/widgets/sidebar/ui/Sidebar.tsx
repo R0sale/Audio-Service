@@ -1,6 +1,6 @@
 import { AudioLines, House, Library, Search, type LucideIcon } from 'lucide-react'
 import { usePlayerStore } from '@/entities/player'
-import { mockPlaylists } from '@/entities/playlist'
+import type { Playlist } from '@/entities/playlist';
 
 type NavItem = { label: string; icon: LucideIcon; active?: boolean }
 
@@ -12,9 +12,10 @@ const navItems: NavItem[] = [
 
 type SidebarProps = {
   className?: string
+  playlists: Playlist[]
 }
 
-export function Sidebar({ className = '' }: SidebarProps) {
+export function Sidebar({ className = '', playlists }: SidebarProps) {
   const queueId = usePlayerStore((state) => state.queueId)
   const isPlaying = usePlayerStore((state) => state.isPlaying)
 
@@ -46,11 +47,11 @@ export function Sidebar({ className = '' }: SidebarProps) {
       <div className="min-h-0 flex-1 overflow-y-auto rounded-lg bg-surface-raised p-4">
         <h2 className="mb-3 px-2 text-sm font-semibold tracking-wide text-muted uppercase">Playlists</h2>
         <ul className="space-y-1">
-          {mockPlaylists.map((playlist) => {
+          {playlists.map((playlist) => {
             const isCurrent = queueId === playlist.id
             return (
               <li key={playlist.id} className="flex items-center gap-3 rounded-md px-2 py-2 transition hover:bg-surface-hover">
-                <div className="size-10 shrink-0 rounded" style={{ background: playlist.cover }} />
+                <div className="size-10 shrink-0 rounded" />
                 <span className={`min-w-0 flex-1 truncate text-sm font-medium ${isCurrent ? 'text-accent' : 'text-white'}`}>
                   {playlist.title}
                 </span>

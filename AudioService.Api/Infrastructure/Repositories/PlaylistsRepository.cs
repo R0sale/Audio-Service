@@ -32,5 +32,17 @@ namespace Infrastructure.Repositories
 
             return playlist;
         }
+
+        public async Task<IEnumerable<Playlist>> GetFeaturedPlaylistsAsync(int numberOfPlaylists, CancellationToken ct)
+        {
+            var playlists = await _context.Playlists.AsNoTracking()
+                .Include(x => x.Tracks)
+                .ThenInclude(x => x.Track)
+                .OrderBy(x => x.Title)
+                .Take(numberOfPlaylists)
+                .ToListAsync(ct);
+
+            return playlists;
+        }
     }
 }

@@ -39,5 +39,12 @@ namespace Application.Services
 
             return Result<PlaylistDto>.Success(result);
         }
+
+        public async Task<IEnumerable<PlaylistDto>> GetFeaturedPlaylistsAsync(int numberOfPlaylists, CancellationToken ct)
+        {
+            var result = await _repository.GetFeaturedPlaylistsAsync(numberOfPlaylists, ct);
+
+            return result.ToPlaylistsDto(_storage);
+        }
     }
 }
