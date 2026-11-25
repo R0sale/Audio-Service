@@ -27,8 +27,8 @@ namespace Infrastructure.Repositories
         public async Task<Playlist?> GetPlaylistByIdAsync(Guid playlistId, CancellationToken ct)
         {
             var playlist = await _context.Playlists.AsNoTracking()
-            .Include(x => x.Tracks)
-            .SingleOrDefaultAsync(x => x.Id == playlistId, ct);
+                .Include(x => x.Tracks)
+                .SingleOrDefaultAsync(x => x.Id == playlistId, ct);
 
             return playlist;
         }
