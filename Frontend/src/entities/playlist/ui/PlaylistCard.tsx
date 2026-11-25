@@ -9,7 +9,7 @@ type PlaylistCardProps = {
 export function PlaylistCard({ playlist, action }: PlaylistCardProps) {
   return (
     <article className="group rounded-lg bg-surface-raised p-3 transition hover:bg-surface-hover">
-      <div className="relative mb-3 aspect-square overflow-hidden rounded-md shadow-lg" style={{ background: playlist.cover }}>
+      <div className="relative mb-3 aspect-square overflow-hidden rounded-md shadow-lg" style={{ background: playlist.coverUrl ? `url("${playlist.coverUrl}") center/cover no-repeat` : 'linear-gradient(135deg, #4f46e5, #3b82f6)' }}>
         {action && (
           <div className="absolute right-2 bottom-2 translate-y-2 opacity-0 transition group-focus-within:translate-y-0 group-focus-within:opacity-100 group-hover:translate-y-0 group-hover:opacity-100">
             {action}

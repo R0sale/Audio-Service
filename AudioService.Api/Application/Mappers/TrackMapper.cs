@@ -32,7 +32,7 @@ namespace Application.Mappers
             var result = new List<TrackDto>();
             foreach (var track in tracks)
             {
-                result.Add(track.MapToTrackDto(storage));
+                result.Add(track.ToTrackDto(storage));
             }
 
             return result;

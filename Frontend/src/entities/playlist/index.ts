@@ -1,3 +1,4 @@
 export type { Playlist } from './model/types'
-export { mockPlaylists } from './api/mockPlaylists'
+export {fetchFeaturedPlaylists} from './api/fetchFeaturedPlaylists'
 export { PlaylistCard } from './ui/PlaylistCard'
+

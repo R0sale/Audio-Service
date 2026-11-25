@@ -1,7 +1,6 @@
 import { Pause, Play } from 'lucide-react'
 import { usePlayerStore } from '@/entities/player'
 import type { Playlist } from '@/entities/playlist'
-import { getTracksByIds } from '@/entities/track'
 import { IconButton } from '@/shared/ui'
 
 type PlayPlaylistButtonProps = {
@@ -18,7 +17,7 @@ export function PlayPlaylistButton({ playlist }: PlayPlaylistButtonProps) {
 
   const handleClick = () => {
     if (isCurrent) togglePlay()
-    else playQueue(getTracksByIds(playlist.trackIds), 0, playlist.id)
+    else playQueue(playlist.tracks.map((t) => t.track), 0, playlist.id)
   }
 
   return (

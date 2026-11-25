@@ -32,5 +32,13 @@ namespace AudioService.Api.Controllers
 
             return Ok(result.Value);
         }
+
+        [HttpGet("featured")]
+        public async Task<IActionResult> GetFeaturedPlaylists(CancellationToken ct, [FromQuery] int take)
+        {
+            var result = await _playlistsService.GetFeaturedPlaylistsAsync(take, ct);
+
+            return Ok(result);
+        }
     }
 }

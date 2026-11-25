@@ -18,7 +18,7 @@ namespace Application.Mappers
                 tracks.Add(new PlaylistTrackDto
                 {
                     Order = track.Order,
-                    Track = TrackMapper.MapToTrackDto(track.Track, storage)
+                    Track = track.Track.ToTrackDto(storage)
                 });
             }
 
@@ -39,7 +39,7 @@ namespace Application.Mappers
             var result = new List<PlaylistDto>();
             foreach (var playlist in playlists)
             {
-                result.Add(playlist.MapToPlaylistDto(storage));
+                result.Add(playlist.ToPlaylistDto(storage));
             }
 
             return result;
