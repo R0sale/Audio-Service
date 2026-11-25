@@ -10,7 +10,7 @@ namespace Application.DTOs
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public string CoverBlobName { get; set; }
+        public string? CoverUrl { get; set; }
 
         public List<PlaylistTrackDto> Tracks { get; set; } = [];
     }

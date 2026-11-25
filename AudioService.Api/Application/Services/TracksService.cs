@@ -5,6 +5,7 @@ using Domain.Models;
 using Domain.Shared;
 using Domain.Enums;
 using System.Net;
+using Application.Mappers;
 
 namespace Application.Services
 {
@@ -26,9 +27,7 @@ namespace Application.Services
             if (track == null)
                 return Result<TrackDto>.Failure(new ObjectNotFoundError($"Couldn't find track with trackId {trackId}", HttpStatusCode.NotFound));
 
-            var audioUrl = _storage.GetFullUrl(MediaKind.Audio, track.AudioBlobName);
-
-            var result = MapToTrackDto(track, audioUrl);
+            var result = track.ToTrackDto(_storage);
 
             return Result<TrackDto>.Success(result);
         }
@@ -37,28 +36,7 @@ namespace Application.Services
         {
             var tracks = await _repository.GetPopularTracksAsync(numberofTracks, ct);
 
-            var result = new List<TrackDto>();
-            foreach (var track in tracks)
-            {
-                var audioUrl = _storage.GetFullUrl(MediaKind.Audio, track.AudioBlobName);
-                result.Add(MapToTrackDto(track, audioUrl));
-            }
-
-            return result;
-        }
-
-        private TrackDto MapToTrackDto(Track track, string audioUrl)
-        {
-            return new TrackDto
-            {
-                Id = track.Id,
-                Album = track.Album,
-                Artist = track.Artist,
-                AudioUrl = audioUrl,
-                CoverUrl = track.CoverBlobName,
-                DurationInSeconds = track.DurationInSeconds,
-                Title = track.Title
-            };
+            return tracks.ToTracksDto(_storage);
         }
     }
 }
