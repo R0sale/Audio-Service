@@ -15,7 +15,9 @@ export function PlayPlaylistButton({ playlist }: PlayPlaylistButtonProps) {
 
   const showPause = isCurrent && isPlaying
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    
     if (isCurrent) togglePlay()
     else playQueue(playlist.tracks.map((t) => t.track), 0, playlist.id)
   }
@@ -25,7 +27,7 @@ export function PlayPlaylistButton({ playlist }: PlayPlaylistButtonProps) {
       label={showPause ? `Pause ${playlist.title}` : `Play ${playlist.title}`}
       variant="primary"
       size="lg"
-      className="bg-accent text-white shadow-xl hover:bg-accent-hover"
+      className="bg-accent! text-white! shadow-lg shadow-black/40 ring-1 ring-white/15 hover:bg-accent-hover! hover:shadow-accent/40 active:scale-95"
       icon={showPause ? <Pause className="size-5" fill="currentColor" /> : <Play className="size-5 translate-x-px" fill="currentColor" />}
       onClick={handleClick}
     />

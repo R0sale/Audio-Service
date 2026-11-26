@@ -28,6 +28,7 @@ namespace Infrastructure.Repositories
         {
             var playlist = await _context.Playlists.AsNoTracking()
                 .Include(x => x.Tracks)
+                .ThenInclude(x => x.Track)
                 .SingleOrDefaultAsync(x => x.Id == playlistId, ct);
 
             return playlist;

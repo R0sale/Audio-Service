@@ -1,6 +1,7 @@
 import { PlaylistCard } from '@/entities/playlist'
 import type { Playlist } from '@/entities/playlist'
 import { PlayPlaylistButton } from '@/features/play-playlist'
+import { Link } from 'react-router'
 
 interface FeaturedPlaylistsProps {
   playlists: Playlist[]
@@ -14,7 +15,9 @@ export function FeaturedPlaylists({ playlists }: FeaturedPlaylistsProps) {
       </h2>
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {playlists.map((playlist) => (
-          <PlaylistCard key={playlist.id} playlist={playlist} action={<PlayPlaylistButton playlist={playlist} />} />
+          <Link key={playlist.id} to={`/playlist/${playlist.id}`} className="group">
+            <PlaylistCard playlist={playlist} action={<PlayPlaylistButton playlist={playlist} />} />
+          </Link>
         ))}
       </div>
     </section>
