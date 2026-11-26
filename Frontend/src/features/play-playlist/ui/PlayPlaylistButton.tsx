@@ -19,7 +19,7 @@ export function PlayPlaylistButton({ playlist }: PlayPlaylistButtonProps) {
     e.preventDefault()
     
     if (isCurrent) togglePlay()
-    else playQueue(playlist.tracks.map((t) => t.track), 0, playlist.id)
+    else playQueue(playlist.tracks.toSorted((a, b) => a.order - b.order).map((t) => t.track), 0, playlist.id)
   }
 
   return (

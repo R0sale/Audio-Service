@@ -23,7 +23,7 @@ export const PlaylistPage = () => {
                 </div>
             </header>
             <div className="bg-linear-to-b from-accent/15 to-surface-raised to-30% px-3 pt-4 pb-8 sm:px-6 md:rounded-b-lg">
-                <TrackList tracks={playlist.tracks.map((t) => t.track)} queueId={playlist.id} />
+                <TrackList tracks={playlist.tracks.toSorted((a, b) => a.order - b.order).map((t) => t.track)} queueId={playlist.id} />
             </div>
         </>
     )
